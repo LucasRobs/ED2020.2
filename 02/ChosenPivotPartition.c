@@ -19,7 +19,7 @@ void ChosenPivotPartition(int* Vector, int size, int pivo){
             Vector[pivo] = aux;
             pivo++;
             i=0;
-        }
+        } 
     }
 }
 
