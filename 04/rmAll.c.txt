@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+struct Pilha{
+    int value;
+    struct Pilha *prox;
+};
+typedef struct Pilha Pilha;
+
+Pilha* init(){
+    Pilha *aux;
+    aux = (Pilha*) malloc(sizeof(Pilha));
+    aux -> prox = NULL;
+    aux -> value = 0;
+    return aux;
+}
+
+Pilha* add(int value, Pilha* pilha){
+    Pilha *aux = (Pilha*) malloc(sizeof(Pilha));
+    aux -> prox  = pilha;
+    aux -> value = value;
+    return aux;
+}
+
+void show(Pilha* pilha){
+    Pilha* aux = pilha;
+    if(aux -> prox == NULL){
+        puts("vazio");
+    }else{
+        while(aux -> prox != NULL){
+            printf("%d ", aux->value);
+            aux = aux->prox; 
+        }
+    }
+}
+
+Pilha* reverse(Pilha* pilha){
+    Pilha* aux = NULL;
+    Pilha* aux2 = pilha;
+    while(aux2 -> prox != NULL){
+        aux = add(aux2 -> value, aux);
+        aux2 = aux2->prox; 
+    }
+    return aux;
+}
+void reverseShow(Pilha* pilha){
+    Pilha* aux = NULL;
+    Pilha* aux2 = pilha;
+    while(aux2 -> prox != NULL){
+        aux = add(aux2 -> value, aux);
+        aux2 = aux2->prox; 
+    }
+    if(aux -> prox == NULL){
+        printf("%d ", aux->value);
+    }else{
+        while(aux -> prox != NULL){
+            printf("%d ", aux->value);
+            aux = aux->prox; 
+        }
+        printf("%d -", aux->value);
+    }
+}
+
+Pilha* rmRepet(Pilha* pilha){
+    pilha = reverse(pilha);
+    Pilha* aux = init();
+    Pilha* aux2 = init();
+    while(pilha -> prox != NULL){
+        bool notExist = true;
+        aux = aux2;
+        while(aux -> prox != NULL){
+            if(aux -> value == pilha -> value){
+                notExist = false;
+                break;
+            }
+            aux = aux -> prox;
+        }
+        if(notExist){
+            aux2 = add(pilha->value, aux2);
+        }    
+        pilha = pilha -> prox;
+    }
+    
+    bool notExist = true;
+    aux = aux2;
+    while(aux -> prox != NULL){
+        if(aux -> value == pilha -> value){
+            notExist = false;
+            break;
+        }
+        aux = aux -> prox;
+    }
+    if(notExist){
+        aux2 = add(pilha->value, aux2);
+    }    
+    pilha = pilha -> prox;
+    
+    return aux2;
+}
+
+int main(){
+    Pilha* pilha = init();
+    int number = 0;
+    scanf("%d", &number);
+    while(number != -1){
+        pilha = add(number, pilha);
+        scanf("%d", &number);
+    }
+    pilha = rmRepet(pilha);
+       reverseShow(pilha);
+}
